@@ -21,14 +21,14 @@ app.use(cors())
 // publicar contenido estatico que esta en ese folder
 app.use(express.static("C:\\Users\\Asus\\Desktop\\Movielize\\Example Nuñez"));
 
-app.get('/getchart', function(req, res) {
-	res.sendFile("C:\\Users\\Asus\\Desktop\\Movielize\\Example Nuñez\\index2.html");
-});
+//app.get('/getchart', function(req, res) {
+//	res.sendFile("C:\\Users\\Asus\\Desktop\\Movielize\\Example Nuñez\\index2.html");
+//});
 
 app.post('/savechart', function(req, res) {
-	var user_name = req.body.data;
-	console.log(user_name);
-	res.send( ' --- Hola mundo');
+	var jsonQuery = req.body.query;
+	console.log(jsonQuery);
+	res.sendFile("C:\\Users\\Asus\\Desktop\\Movielize\\Example Nuñez\\index2.html");
 });
 
 

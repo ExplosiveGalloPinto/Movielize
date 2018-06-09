@@ -1,25 +1,34 @@
 <html>
   <head>
-    <title>Simple login</title>
+    <title>Movilieze</title>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js">  </script>
-    <script>
-      $(document).ready(function(){
-        var data;
-        $("#submit").click(function(){
-          datal=$("#data").val();
-          $.post("http://localhost:8000/savechart",{data: datal}, function(data){
-            if(data==='done')
-              {
-                alert("login success");
-              }
-          });
-        });
-      });
-    </script>
   </head>
   <body>
-    <h1>Hello people !</h1>
-    <input type="TEXT" id="data"><br>
-    <input type="button" id="submit" value="Submit">
+    <h1>Movilieze</h1>
+    <!--Query criteria form-->
+        <table>
+          <tr>
+            <td>Query:</td>
+            <td><textarea rows="4" cols="50" id="queryData"></textarea></td>
+          </tr>
+        </table>
+        <br><br>
+        <button id="submit" onclick="getFields()">Submit</button>
+
+<!--Script-->
+<script>
+function getFields(){
+  try{
+    var query;
+    query=document.getElementById("queryData").value;
+    var obj = JSON.parse(query);
+    $.post("/savechart",{query: query});
+  }
+  catch(err){
+    alert("Incorrect input format, must be JSON type")
+  }
+}
+
+</script>
   </body>
 </html>
