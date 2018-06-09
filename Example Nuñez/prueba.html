@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="utf-8"/>
+<meta name="description" content="This is Movielize. A graphic app for your movies.">
+    <title>Main page</title>
+	<script src="https://d3js.org/d3.v3.min.js" charset="uft-8"></script>
+	<script>
+	//var data;
+	//submit.click(function(){
+	
+	var width = 960,
+    height = 500;
+
+	var x = d3.scale.ordinal()
+		.rangeRoundBands([0, width], .1);
+
+	var y = d3.scale.linear()
+		.range([height, 0]);
+
+	var chart = d3.select(".chart")
+		.attr("width", width)
+		.attr("height", height);
+
+	d3.tsv("data.tsv", type, function(error, data) {
+	  x.domain(data.map(function(d) { return d.name; }));
+	  y.domain([0, d3.max(data, function(d) { return d.value; })]);
+
+	  var bar = chart.selectAll("g")
+			.data(data)
+			.enter().append("g")
+			.attr("transform", function(d) { return "translate(" + x(d.name) + ",0)"; });
+
+	  bar.append("rect")
+			.attr("y", function(d) { return y(d.value); })
+			.attr("height", function(d) { return height - y(d.value); })
+			.attr("width", x.rangeBand());
+
+	  bar.append("text")
+			.attr("x", x.rangeBand() / 2)
+			.attr("y", function(d) { return y(d.value) + 3; })
+			.attr("dy", ".75em")
+			.text(function(d) { return d.value; });
+	});
+
+	function type(d) {
+	  d.value = +d.value; // coerce to number
+	  return d;
+	}
+	//});
+	</script>
+
+</head>
+<body>
+	<h2>Movielize</h2>
+    <form id="form1" style="border: 3px solid #f1f1f1; width: 500px">
+        <div>
+            <label for="jsonText">Ingrese el texto en formato JSON</label>
+			<input type="TEXT" id="data"><br/>
+        </div>
+			<button id="submit">
+
+    </form>
+	<br/>
+	<br/>
+	<div id="chart"></div>
+</body>
+</html>
