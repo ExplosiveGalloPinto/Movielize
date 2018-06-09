@@ -6,7 +6,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 
 // constante para definir el puerto a ser usado
-var PORT_NUMBER = 8000;
+var PORT_NUMBER = 8080;
 
 // se inicia el servidor web express
 var app = express()
@@ -19,10 +19,10 @@ app.use(bodyParser.json());
 app.use(cors())
 
 // publicar contenido estatico que esta en ese folder
-app.use(express.static("C:\\Users\\Andres\\Desktop\\Movielize\\Example Nuñez"));
+app.use(express.static("C:\\Users\\Asus\\Desktop\\Movielize\\Example Nuñez"));
 
 app.get('/getchart', function(req, res) {
-	res.sendFile("C:\\Users\\Andres\\Desktop\\Movielize\\Example Nuñez\\index2.html");
+	res.sendFile("C:\\Users\\Asus\\Desktop\\Movielize\\Example Nuñez\\index2.html");
 });
 
 app.post('/savechart', function(req, res) {
