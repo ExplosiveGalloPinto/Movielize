@@ -19,7 +19,7 @@ var file = require('./movies.json'); //(with path)
 app.use(cors())
 
 // publicar contenido estatico que esta en ese folder
-app.use(express.static("C:\\Users\\Andres\\Desktop\\Movielize\\Example Nuñez"));
+app.use(express.static("C:\\Users\\Andres\\Desktop\\Movielize\\Movielize"));
 
 //app.get('/getchart', function(req, res) {
 //	res.sendFile("C:\\Users\\Asus\\Desktop\\Movielize\\Example Nuñez\\index2.html");
@@ -29,7 +29,7 @@ app.post('/savechart', function(req, res) {
 	var jsonQuery = req.body.query;
 	jsonQuery = JSON.parse(jsonQuery);
 	var dataFiltered = filterApply(jsonQuery);
-	console.log("Resultado: "+ JSON.stringify(filterApply(jsonQuery)));
+	console.log("Resultado: "+ JSON.stringify(dataFiltered));
 	//res.set('Content-Type','text/plain');
 	//res.send("Me cago en tus muertos");
 	res.send(dataFiltered);
@@ -38,15 +38,12 @@ app.post('/savechart', function(req, res) {
 
 // escuchar comunicacion sobre el puerto indicado en HTTP
 app.listen(PORT_NUMBER);
-console.log("Listening on port "+PORT_NUMBER)
-console.log("print del json: "+JSON.stringify(file[0]));
+console.log("Listening on port "+PORT_NUMBER);
 
 
 function filterApply(query){ //utilizar la estructura
 	var queryResult = file;
 	var temporalResult;
-
-	console.log(JSON.stringify(query));
 	if(query[0].hasOwnProperty('title')){
 		temporalResult = [];
 		queryResult.filter(function (i,n){
@@ -64,7 +61,6 @@ function filterApply(query){ //utilizar la estructura
 	queryResult = temporalResult;
 	}
 	if(query[0].hasOwnProperty('genre')){
-		console.log("soplame genre");
 		temporalResult = [];
 		queryResult.filter(function (i,n){
 			if(i.genre != null){
@@ -99,7 +95,6 @@ function filterApply(query){ //utilizar la estructura
 	}
 
 	if(query[0].hasOwnProperty('cast')){
-		console.log("soplame cast");
 		temporalResult = [];
 		queryResult.filter(function (i,n){
 			if(i.cast != null){
@@ -134,7 +129,6 @@ function filterApply(query){ //utilizar la estructura
 	}
 	
 	if(query[0].hasOwnProperty('director')){
-		console.log("soplame director");
 		temporalResult = [];
 		queryResult.filter(function (i,n){
 			if(i.director != null){
@@ -169,7 +163,6 @@ function filterApply(query){ //utilizar la estructura
 	}
 		
 	if(query[0].hasOwnProperty('notes')){
-		console.log("soplame notes");
 		temporalResult = [];
 		queryResult.filter(function (i,n){
 			if(i.notes != null){
