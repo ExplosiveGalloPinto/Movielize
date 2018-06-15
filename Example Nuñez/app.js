@@ -14,7 +14,7 @@ var app = express()
 // iniciar el parsing de json
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-
+var file = require('./movies.json'); //(with path)
 // para habilitar cross domain
 app.use(cors())
 
@@ -27,16 +27,183 @@ app.use(express.static("C:\\Users\\Andres\\Desktop\\Movielize\\Example Nuñez"))
 
 app.post('/savechart', function(req, res) {
 	var jsonQuery = req.body.query;
-	console.log(jsonQuery);
-	//res.set('Content-Type','text/plain');
-	var movies = require('./movies.json');
 	jsonQuery = JSON.parse(jsonQuery);
-	//movies = JSON.parse(movies);
-	console.log(movies[0].title);
-	res.send(movies);
+	var dataFiltered = filterApply(jsonQuery);
+	console.log("Resultado: "+ JSON.stringify(filterApply(jsonQuery)));
+	//res.set('Content-Type','text/plain');
+	//res.send("Me cago en tus muertos");
+	res.send(dataFiltered);
 });
 
 
 // escuchar comunicacion sobre el puerto indicado en HTTP
 app.listen(PORT_NUMBER);
 console.log("Listening on port "+PORT_NUMBER)
+console.log("print del json: "+JSON.stringify(file[0]));
+
+
+function filterApply(query){ //utilizar la estructura
+	var queryResult = file;
+	var temporalResult;
+
+	console.log(JSON.stringify(query));
+	if(query[0].hasOwnProperty('title')){
+		temporalResult = [];
+		queryResult.filter(function (i,n){
+			if(Array.isArray(query[0].title)){
+				query[0].title.forEach(element => {
+					if(i.title.includes(element)){
+						temporalResult.push(i);
+					}
+				});
+			}
+			else if(i.title.includes(query[0].title)){
+				temporalResult.push(i);
+			}
+	})
+	queryResult = temporalResult;
+	}
+	if(query[0].hasOwnProperty('genre')){
+		console.log("soplame genre");
+		temporalResult = [];
+		queryResult.filter(function (i,n){
+			if(i.genre != null){
+			
+				if(Array.isArray(query[0].genre)){
+					query[0].genre.forEach(element => {
+						if(Array.isArray(i.genre)){
+							i.genre.forEach(elementg => {
+								if(elementg.includes(element)){
+									temporalResult.push(i);
+								}
+							})
+						}
+						else if(i.genre.includes(element)){
+							temporalResult.push(i);
+						}
+					});
+				}
+				else if(Array.isArray(i.genre)){
+					i.genre.forEach(elementg => {
+						if(elementg.includes(query[0].genre)){
+							temporalResult.push(i);
+						}
+					})
+				}
+
+				else if(i.genre.includes(query[0].genre)){
+					temporalResult.push(i);
+				}
+		}})
+	queryResult = temporalResult;
+	}
+
+	if(query[0].hasOwnProperty('cast')){
+		console.log("soplame cast");
+		temporalResult = [];
+		queryResult.filter(function (i,n){
+			if(i.cast != null){
+			
+				if(Array.isArray(query[0].cast)){
+					query[0].cast.forEach(element => {
+						if(Array.isArray(i.cast)){
+							i.cast.forEach(elementg => {
+								if(elementg.includes(element)){
+									temporalResult.push(i);
+								}
+							})
+						}
+						else if(i.cast.includes(element)){
+							temporalResult.push(i);
+						}
+					});
+				}
+				else if(Array.isArray(i.cast)){
+					i.cast.forEach(elementg => {
+						if(elementg.includes(query[0].cast)){
+							temporalResult.push(i);
+						}
+					})
+				}
+
+				else if(i.cast.includes(query[0].cast)){
+					temporalResult.push(i);
+				}
+		}})
+	queryResult = temporalResult;
+	}
+	
+	if(query[0].hasOwnProperty('director')){
+		console.log("soplame director");
+		temporalResult = [];
+		queryResult.filter(function (i,n){
+			if(i.director != null){
+			
+				if(Array.isArray(query[0].director)){
+					query[0].director.forEach(element => {
+						if(Array.isArray(i.director)){
+							i.director.forEach(elementg => {
+								if(elementg.includes(element)){
+									temporalResult.push(i);
+								}
+							})
+						}
+						else if(i.director.includes(element)){
+							temporalResult.push(i);
+						}
+					});
+				}
+				else if(Array.isArray(i.director)){
+					i.director.forEach(elementg => {
+						if(elementg.includes(query[0].director)){
+							temporalResult.push(i);
+						}
+					})
+				}
+
+				else if(i.director.includes(query[0].director)){
+					temporalResult.push(i);
+				}
+		}})
+	queryResult = temporalResult;
+	}
+		
+	if(query[0].hasOwnProperty('notes')){
+		console.log("soplame notes");
+		temporalResult = [];
+		queryResult.filter(function (i,n){
+			if(i.notes != null){
+			
+				if(Array.isArray(query[0].notes)){
+					query[0].notes.forEach(element => {
+						if(Array.isArray(i.notes)){
+							i.notes.forEach(elementg => {
+								if(elementg.includes(element)){
+									temporalResult.push(i);
+								}
+							})
+						}
+						else if(i.notes.includes(element)){
+							temporalResult.push(i);
+						}
+					});
+				}
+				else if(Array.isArray(i.notes)){
+					i.notes.forEach(elementg => {
+						if(elementg.includes(query[0].notes)){
+							temporalResult.push(i);
+						}
+					})
+				}
+
+				else if(i.notes.includes(query[0].notes)){
+					temporalResult.push(i);
+				}
+		}})
+	queryResult = temporalResult;
+	}
+	if(query[0].hasOwnProperty('year')){
+		console.log("soplame year caso 0");
+	}
+	return queryResult;
+}
