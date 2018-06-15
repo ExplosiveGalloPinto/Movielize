@@ -22,13 +22,16 @@ function getFields(){
     var query;
     query=document.getElementById("queryData").value;
     var obj = JSON.parse(query);
-    $.post("/savechart",{query: query});
+    $.post("/savechart",{query: query},function(response){
+      alert(response);
+    });
   }
   catch(err){
     alert("Incorrect input format, must be JSON type")
   }
 }
 
+
 </script>
-  </body>
+</body>
 </html>

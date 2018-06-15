@@ -28,7 +28,8 @@ app.use(express.static("C:\\Users\\Asus\\Desktop\\Movielize\\Example Nuñez"));
 app.post('/savechart', function(req, res) {
 	var jsonQuery = req.body.query;
 	console.log(jsonQuery);
-	res.sendFile("C:\\Users\\Asus\\Desktop\\Movielize\\Example Nuñez\\index2.html");
+	//res.set('Content-Type','text/plain');
+	res.send("Me cago en tus muertos");
 });
 
 
