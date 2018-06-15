@@ -19,7 +19,7 @@ app.use(bodyParser.json());
 app.use(cors())
 
 // publicar contenido estatico que esta en ese folder
-app.use(express.static("C:\\Users\\Asus\\Desktop\\Movielize\\Example Nuñez"));
+app.use(express.static("C:\\Users\\Andres\\Desktop\\Movielize\\Example Nuñez"));
 
 //app.get('/getchart', function(req, res) {
 //	res.sendFile("C:\\Users\\Asus\\Desktop\\Movielize\\Example Nuñez\\index2.html");
@@ -29,7 +29,11 @@ app.post('/savechart', function(req, res) {
 	var jsonQuery = req.body.query;
 	console.log(jsonQuery);
 	//res.set('Content-Type','text/plain');
-	res.send("Me cago en tus muertos");
+	var movies = require('./movies.json');
+	jsonQuery = JSON.parse(jsonQuery);
+	//movies = JSON.parse(movies);
+	console.log(movies[0].title);
+	res.send(movies);
 });
 
 
