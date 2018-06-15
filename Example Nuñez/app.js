@@ -91,15 +91,104 @@ function filterApply(query){ //utilizar la estructura
 				}
 		}})
 	}
-	
+
 	if(query[0].hasOwnProperty('cast')){
 		console.log("soplame cast");
+		file.filter(function (i,n){
+			if(i.cast != null){
+			
+				if(Array.isArray(query[0].cast)){
+					query[0].cast.forEach(element => {
+						if(Array.isArray(i.cast)){
+							i.cast.forEach(elementg => {
+								if(elementg.includes(element)){
+									console.log("ENCONTRE: "+ JSON.stringify(i));
+								}
+							})
+						}
+						else if(i.cast.includes(element)){
+							console.log("ENCONTRE: "+ JSON.stringify(i));
+						}
+					});
+				}
+				else if(Array.isArray(i.cast)){
+					i.cast.forEach(elementg => {
+						if(elementg.includes(query[0].cast)){
+							console.log("ENCONTRE: "+ JSON.stringify(i));
+						}
+					})
+				}
+
+				else if(i.cast.includes(query[0].cast)){
+					console.log("ENCONTRE: "+ JSON.stringify(i));
+				}
+		}})
 	}
+	
 	if(query[0].hasOwnProperty('director')){
 		console.log("soplame director");
+		file.filter(function (i,n){
+			if(i.director != null){
+			
+				if(Array.isArray(query[0].director)){
+					query[0].director.forEach(element => {
+						if(Array.isArray(i.director)){
+							i.director.forEach(elementg => {
+								if(elementg.includes(element)){
+									console.log("ENCONTRE: "+ JSON.stringify(i));
+								}
+							})
+						}
+						else if(i.director.includes(element)){
+							console.log("ENCONTRE: "+ JSON.stringify(i));
+						}
+					});
+				}
+				else if(Array.isArray(i.director)){
+					i.director.forEach(elementg => {
+						if(elementg.includes(query[0].director)){
+							console.log("ENCONTRE: "+ JSON.stringify(i));
+						}
+					})
+				}
+
+				else if(i.director.includes(query[0].director)){
+					console.log("ENCONTRE: "+ JSON.stringify(i));
+				}
+		}})
 	}
+		
 	if(query[0].hasOwnProperty('notes')){
 		console.log("soplame notes");
+		file.filter(function (i,n){
+			if(i.notes != null){
+			
+				if(Array.isArray(query[0].notes)){
+					query[0].notes.forEach(element => {
+						if(Array.isArray(i.notes)){
+							i.notes.forEach(elementg => {
+								if(elementg.includes(element)){
+									console.log("ENCONTRE: "+ JSON.stringify(i));
+								}
+							})
+						}
+						else if(i.notes.includes(element)){
+							console.log("ENCONTRE: "+ JSON.stringify(i));
+						}
+					});
+				}
+				else if(Array.isArray(i.notes)){
+					i.notes.forEach(elementg => {
+						if(elementg.includes(query[0].notes)){
+							console.log("ENCONTRE: "+ JSON.stringify(i));
+						}
+					})
+				}
+
+				else if(i.notes.includes(query[0].notes)){
+					console.log("ENCONTRE: "+ JSON.stringify(i));
+				}
+		}})
 	}
 	if(query[0].hasOwnProperty('year')){
 		console.log("soplame year caso 0");
