@@ -19,7 +19,7 @@ var file = require('./movies.json'); //(with path)
 app.use(cors())
 
 // publicar contenido estatico que esta en ese folder
-app.use(express.static("C:\\Users\\Andres\\Desktop\\Movielize\\Example Nuñez"));
+app.use(express.static("C:\\Users\\Asus\\Desktop\\Movielize\\Movielize"));
 
 //app.get('/getchart', function(req, res) {
 //	res.sendFile("C:\\Users\\Asus\\Desktop\\Movielize\\Example Nuñez\\index2.html");
@@ -39,14 +39,11 @@ app.post('/savechart', function(req, res) {
 // escuchar comunicacion sobre el puerto indicado en HTTP
 app.listen(PORT_NUMBER);
 console.log("Listening on port "+PORT_NUMBER)
-console.log("print del json: "+JSON.stringify(file[0]));
 
 
 function filterApply(query){ //utilizar la estructura
 	var queryResult = file;
 	var temporalResult;
-
-	console.log(JSON.stringify(query));
 	if(query[0].hasOwnProperty('title')){
 		temporalResult = [];
 		queryResult.filter(function (i,n){
@@ -203,7 +200,28 @@ function filterApply(query){ //utilizar la estructura
 	queryResult = temporalResult;
 	}
 	if(query[0].hasOwnProperty('year')){
-		console.log("soplame year caso 0");
+		temporalResult = [];
+		queryResult.filter(function (i,n){
+			if(Array.isArray(query[0].year)){
+				query[0].year.forEach(element =>{
+					if(i.year === element){
+						temporalResult.push(i);
+					}	
+				})
+			}
+			else if(typeof query[0].year === "string"){
+				var yearRange = query[0].year.split("-",2);
+				if(i.year > yearRange[0] && i.year < yearRange[1]){
+					temporalResult.push(i);
+				}
+			}
+			else if(typeof query[0].year === "number"){
+				if(i.year === query[0].year){
+					temporalResult.push(i);
+				}
+			}
+	})
+	queryResult = temporalResult;
 	}
 	return queryResult;
 }
