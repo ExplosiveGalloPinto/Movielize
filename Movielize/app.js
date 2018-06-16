@@ -40,7 +40,6 @@ app.post('/savechart', function (req, res) {
 	var dataFiltered = filterApply(jsonQuery);
 	console.log("Resultado: " + JSON.stringify(dataFiltered));
 	//res.set('Content-Type','text/plain');
-	//res.send("Me cago en tus muertos");
 	req.session.jsonQuery = dataFiltered;
 	res.send("hola");
 });
