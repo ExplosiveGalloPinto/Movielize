@@ -23,7 +23,6 @@ function getFields(){
     query=document.getElementById("queryData").value;
     var obj = JSON.parse(query);
     $.post("/savechart",{query: query},function(response){
-      alert(JSON.stringify(response[0]));
       window.location.href =  "/makeGraph";
     });
   }

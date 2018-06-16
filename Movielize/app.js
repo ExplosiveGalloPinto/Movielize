@@ -2,6 +2,7 @@
 var cors = require('cors')
 // servidor web
 var express = require('express');
+// session
 var session = require('express-session')
 // para recibir y parsear content en formato json
 var bodyParser = require('body-parser');
@@ -11,6 +12,7 @@ var PORT_NUMBER = 8080;
 
 // se inicia el servidor web express
 var app = express()
+
 // Setup of session
 app.use(session({
     secret: 'zasdas',
@@ -18,20 +20,16 @@ app.use(session({
     resave: true,
     saveUninitialized: true
 }));
+
 // iniciar el parsing de json
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-var file = require('./movies.json'); //(with path)
+var file = require('./movies.json');
 // para habilitar cross domain
 app.use(cors())
 
 // publicar contenido estatico que esta en ese folder
-
 app.use(express.static("C:\\Users\\Andres\\Desktop\\Movielize\\Movielize"));
-
-//app.get('/getchart', function(req, res) {
-//	res.sendFile("C:\\Users\\Asus\\Desktop\\Movielize\\Example Nuñez\\index2.html");
-//});
 
 app.post('/savechart', function (req, res) {
 	var jsonQuery = req.body.query;
@@ -39,9 +37,10 @@ app.post('/savechart', function (req, res) {
 	jsonQuery = JSON.parse(jsonQuery);
 	var dataFiltered = filterApply(jsonQuery);
 	dataFiltered = sortByKey(dataFiltered, 'year'); //ordenamiento por anho
+	dataFiltered = sortByKey(dataFiltered, 'genre');
 	console.log("Resultado: " + JSON.stringify(dataFiltered));
 	req.session.jsonQuery = dataFiltered;
-	res.send("hola");
+	res.send("change page");
 });
 
 app.get('/makeGraph', function(req, res){
