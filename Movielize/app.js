@@ -38,9 +38,8 @@ app.post('/savechart', function (req, res) {
 	console.log(jsonQuery);
 	jsonQuery = JSON.parse(jsonQuery);
 	var dataFiltered = filterApply(jsonQuery);
+	dataFiltered = sortByKey(dataFiltered, 'year'); //ordenamiento por anho
 	console.log("Resultado: " + JSON.stringify(dataFiltered));
-	//res.set('Content-Type','text/plain');
-	//res.send("Me cago en tus muertos");
 	req.session.jsonQuery = dataFiltered;
 	res.send("hola");
 });
@@ -68,12 +67,12 @@ function filterApply(query) { //utilizar la estructura
 		queryResult.filter(function (i, n) {
 			if (Array.isArray(query[0].title)) {
 				query[0].title.forEach(element => {
-					if (i.title.includes(element)) {
+					if (i.title.toUpperCase().includes(element.toUpperCase())) {
 						temporalResult.push(i);
 					}
 				});
 			}
-			else if (i.title.includes(query[0].title)) {
+			else if (i.title.toUpperCase().includes(query[0].title.toUpperCase())) {
 				temporalResult.push(i);
 			}
 		})
@@ -86,27 +85,13 @@ function filterApply(query) { //utilizar la estructura
 
 				if (Array.isArray(query[0].genre)) {
 					query[0].genre.forEach(element => {
-						if (Array.isArray(i.genre)) {
-							i.genre.forEach(elementg => {
-								if (elementg.includes(element)) {
-									temporalResult.push(i);
-								}
-							})
-						}
-						else if (i.genre.includes(element)) {
+						if (i.genre.toUpperCase().includes(element.toUpperCase())) {
 							temporalResult.push(i);
 						}
 					});
 				}
-				else if (Array.isArray(i.genre)) {
-					i.genre.forEach(elementg => {
-						if (elementg.includes(query[0].genre)) {
-							temporalResult.push(i);
-						}
-					})
-				}
 
-				else if (i.genre.includes(query[0].genre)) {
+				else if (i.genre.toUpperCase().includes(query[0].genre.toUpperCase())) {
 					temporalResult.push(i);
 				}
 			}
@@ -121,27 +106,13 @@ function filterApply(query) { //utilizar la estructura
 
 				if (Array.isArray(query[0].cast)) {
 					query[0].cast.forEach(element => {
-						if (Array.isArray(i.cast)) {
-							i.cast.forEach(elementg => {
-								if (elementg.includes(element)) {
-									temporalResult.push(i);
-								}
-							})
-						}
-						else if (i.cast.includes(element)) {
+						if (i.cast.toUpperCase().includes(element.toUpperCase())) {
 							temporalResult.push(i);
 						}
 					});
 				}
-				else if (Array.isArray(i.cast)) {
-					i.cast.forEach(elementg => {
-						if (elementg.includes(query[0].cast)) {
-							temporalResult.push(i);
-						}
-					})
-				}
 
-				else if (i.cast.includes(query[0].cast)) {
+				else if (i.cast.toUpperCase().includes(query[0].cast.toUpperCase())) {
 					temporalResult.push(i);
 				}
 			}
@@ -156,27 +127,13 @@ function filterApply(query) { //utilizar la estructura
 
 				if (Array.isArray(query[0].director)) {
 					query[0].director.forEach(element => {
-						if (Array.isArray(i.director)) {
-							i.director.forEach(elementg => {
-								if (elementg.includes(element)) {
-									temporalResult.push(i);
-								}
-							})
-						}
-						else if (i.director.includes(element)) {
+						if (i.director.toUpperCase().includes(element.toUpperCase())) {
 							temporalResult.push(i);
 						}
 					});
 				}
-				else if (Array.isArray(i.director)) {
-					i.director.forEach(elementg => {
-						if (elementg.includes(query[0].director)) {
-							temporalResult.push(i);
-						}
-					})
-				}
 
-				else if (i.director.includes(query[0].director)) {
+				else if (i.director.toUpperCase().includes(query[0].director.toUpperCase())) {
 					temporalResult.push(i);
 				}
 			}
@@ -191,27 +148,13 @@ function filterApply(query) { //utilizar la estructura
 
 				if (Array.isArray(query[0].notes)) {
 					query[0].notes.forEach(element => {
-						if (Array.isArray(i.notes)) {
-							i.notes.forEach(elementg => {
-								if (elementg.includes(element)) {
-									temporalResult.push(i);
-								}
-							})
-						}
-						else if (i.notes.includes(element)) {
+						if (i.notes.toUpperCase().includes(element.toUpperCase())) {
 							temporalResult.push(i);
 						}
 					});
 				}
-				else if (Array.isArray(i.notes)) {
-					i.notes.forEach(elementg => {
-						if (elementg.includes(query[0].notes)) {
-							temporalResult.push(i);
-						}
-					})
-				}
 
-				else if (i.notes.includes(query[0].notes)) {
+				else if (i.notes.toUpperCase().includes(query[0].notes.toUpperCase())) {
 					temporalResult.push(i);
 				}
 			}
@@ -219,6 +162,7 @@ function filterApply(query) { //utilizar la estructura
 		queryResult = temporalResult;
 	}
 	if(query[0].hasOwnProperty('year')){
+
 		temporalResult = [];
 		queryResult.filter(function (i,n){
 			if(Array.isArray(query[0].year)){
@@ -230,7 +174,7 @@ function filterApply(query) { //utilizar la estructura
 			}
 			else if(typeof query[0].year === "string"){
 				var yearRange = query[0].year.split("-",2);
-				if(i.year > yearRange[0] && i.year < yearRange[1]){
+				if(i.year >= yearRange[0] && i.year <= yearRange[1]){
 					temporalResult.push(i);
 				}
 			}
@@ -244,4 +188,11 @@ function filterApply(query) { //utilizar la estructura
 
 	}
 	return queryResult;
+}
+
+function sortByKey(array, key) {
+    return array.sort(function(a, b) {
+        var x = a[key]; var y = b[key];
+        return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+    });
 }
