@@ -219,9 +219,13 @@
 </head>
 <body>
     <!--<form id="form1" style="border: 3px solid #f1f1f1; width: 500px"></form>-->
-
+	<button id="SaveGraph" onclick="saveGraph()">Save Query</button>
 	<script>
-		
+		function saveGraph(){
+			$.post('/saveGraph',function(response){
+				alert("Su llave es: "+response)
+			});
+		}
       
         /*g.selectAll(".bar")
           .data(data)

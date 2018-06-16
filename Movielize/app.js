@@ -8,7 +8,7 @@ var session = require('express-session')
 var bodyParser = require('body-parser');
 //Init crypto
 var crypto = require('crypto');
-var decryptedDataG ;
+var decryptedDataG = undefined;
 var publicKey;
 
 //Iniciar node-cache
@@ -38,8 +38,7 @@ app.use(cors())
 
 // publicar contenido estatico que esta en ese folder
 app.use(express.static("C:\\Users\\Asus\\Desktop\\Movielize\\Movielize"));
-
-app.post('/savechart', function (req, res) {
+app.post('/parseQuery', function (req, res) {
 	var jsonQuery = req.body.query;
 	console.log(jsonQuery);
 	jsonQuery = JSON.parse(jsonQuery);
@@ -54,19 +53,12 @@ app.post('/savechart', function (req, res) {
 	var yearMin = dataFiltered[0].year;
 	var yearMax = dataFiltered[moviesQuantity-1].year;
 	var yearDiff = yearMax-yearMin; 
-	console.log("Resultado: " + JSON.stringify(dataFiltered));
+	//console.log("Resultado: " + JSON.stringify(dataFiltered));
 	//res.set('Content-Type','text/plain');
 	req.session.jsonQuery = dataFiltered;
 	req.session.yearDifference = yearDiff;
 	req.session.yearMin = yearMin;
 	req.session.yearMax = yearMax;
-	//Store in cache, first create a key
-	var queryKey2 = keyGenerator();
-	console.log("Generated key: "+queryKey2);
-	encryptCache(dataFiltered,queryKey2);
-	console.log("Desencriptar===============");
-	console.log(JSON.stringify(retrieveCache(queryKey2)));
-	console.log("func"+JSON.stringify(decryptedDataG));
 	//Send info to the other page  
 	res.send("change page");
 });
@@ -76,7 +68,37 @@ app.get('/makeGraph', function(req, res){
 });
 
 app.get('/getGraph', function(req, res){
+	if(decryptedDataG != undefined){
+		var moviesQuantity = Object.keys(decryptedDataG).length;
+		var yearMin = decryptedDataG[0].year;
+		var yearMax = decryptedDataG[moviesQuantity-1].year;
+		var yearDiff = yearMax-yearMin; 
+		console.log("OKALDIJ");
+		//res.set('Content-Type','text/plain');
+		req.session.jsonQuery = decryptedDataG;
+		req.session.yearDifference = yearDiff;
+		req.session.yearMin = yearMin;
+		req.session.yearMax = yearMax;
+		//Send info to the other page  
+		res.send([decryptedDataG, req.session.yearDifference, req.session.yearMin, req.session.yearMax]);
+		decryptedDataG = undefined;
+	}
+	else{
 	res.send([req.session.jsonQuery, req.session.yearDifference, req.session.yearMin, req.session.yearMax]);
+	}
+});
+
+//usin the key for the graph
+app.post('/loadKey', function(req, res){
+	var keyQuery = req.body.query;
+	retrieveCache(keyQuery);
+	res.send("done");
+
+});
+
+app.post('/saveGraph', function(req, res){
+	encryptCache(req.session.jsonQuery);
+	res.send(publicKey);
 });
 
 
