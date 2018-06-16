@@ -6,6 +6,8 @@ var express = require('express');
 var session = require('express-session')
 // para recibir y parsear content en formato json
 var bodyParser = require('body-parser');
+//Init crypto
+var crypto = require('crypto');
 
 //Iniciar node-cache
 const NodeCache = require( "node-cache" );
@@ -57,13 +59,7 @@ app.post('/savechart', function (req, res) {
 	req.session.yearMin = yearMin;
 	req.session.yearMax = yearMax;
 	//Store in cache, first create a key
-	var queryKey = keyGenerator();
-	console.log("Generated key: "+queryKey);
-	myCache.set( queryKey, dataFiltered, function( err, success ){//Save the query
-		if( !err && success ){
-		  console.log("status:"+ success );
-		}
-	  });
+
 	//Send info to the other page  
 	res.send("change page");
 });
@@ -234,10 +230,25 @@ function retrieveKey(keyValue){
 		  if(value == undefined){
 			console.log("Invalid key.");
 		  }else{
+			var mykey = crypto.createDecipher('aes-128-cbc', 'mypassword');
+			var decypherData = mykey.update(value, 'hex', 'utf8')
+			decypherData += mykey.update.final('utf8');  
 			console.log( value );
 			return value;
 		  }
 		}
 	  });
+}
 
+function encryptCache(data){
+	var queryKey = keyGenerator();
+	console.log("Generated key: "+queryKey);
+	var mykey = crypto.createCipher('aes-128-cbc', queryKey);
+	var cypherData = mykey.update(data, 'utf8', 'hex')
+	cypherData += mykey.update.final('hex');
+	myCache.set( queryKey, cypherData, function( err, success ){//Save the query
+		if( !err && success ){
+		  console.log("status:"+ success );
+		}
+	  });
 }
