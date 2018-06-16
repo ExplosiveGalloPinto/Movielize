@@ -8,6 +8,8 @@ var session = require('express-session')
 var bodyParser = require('body-parser');
 //Init crypto
 var crypto = require('crypto');
+var decryptedDataG ;
+var publicKey;
 
 //Iniciar node-cache
 const NodeCache = require( "node-cache" );
@@ -59,7 +61,12 @@ app.post('/savechart', function (req, res) {
 	req.session.yearMin = yearMin;
 	req.session.yearMax = yearMax;
 	//Store in cache, first create a key
-
+	var queryKey2 = keyGenerator();
+	console.log("Generated key: "+queryKey2);
+	encryptCache(dataFiltered,queryKey2);
+	console.log("Desencriptar===============");
+	console.log(JSON.stringify(retrieveCache(queryKey2)));
+	console.log("func"+JSON.stringify(decryptedDataG));
 	//Send info to the other page  
 	res.send("change page");
 });
@@ -224,17 +231,16 @@ function keyGenerator() {
 	return color;
 }
 
-function retrieveKey(keyValue){
+function retrieveCache(keyValue){
 	myCache.get( keyValue, function( err, value ){
 		if( !err ){
 		  if(value == undefined){
 			console.log("Invalid key.");
 		  }else{
-			var mykey = crypto.createDecipher('aes-128-cbc', 'mypassword');
-			var decypherData = mykey.update(value, 'hex', 'utf8')
-			decypherData += mykey.update.final('utf8');  
-			console.log( value );
-			return value;
+			var decryptedData = decrypt(value,keyValue);
+			//console.log(decryptedData);
+			decryptedDataG = decryptedData;
+			return decryptedData;
 		  }
 		}
 	  });
@@ -242,13 +248,31 @@ function retrieveKey(keyValue){
 
 function encryptCache(data){
 	var queryKey = keyGenerator();
-	console.log("Generated key: "+queryKey);
-	var mykey = crypto.createCipher('aes-128-cbc', queryKey);
-	var cypherData = mykey.update(data, 'utf8', 'hex')
-	cypherData += mykey.update.final('hex');
-	myCache.set( queryKey, cypherData, function( err, success ){//Save the query
+	publicKey = queryKey;
+	//console.log("Generated key: "+queryKey);
+	myCache.set( queryKey, encrypt(data,queryKey), function( err, success ){//Save the query
 		if( !err && success ){
 		  console.log("status:"+ success );
 		}
 	  });
+}
+
+function encrypt(data,key) {
+    try {
+        var cipher = crypto.createCipher('aes-256-cbc', key);
+        var encrypted = Buffer.concat([cipher.update(new Buffer(JSON.stringify(data), "utf8")), cipher.final()]);
+        return encrypted;
+    } catch (exception) {
+        throw new Error(exception.message);
+    }
+}
+
+function decrypt(data, key) {
+    try {
+        var decipher = crypto.createDecipher("aes-256-cbc", key);
+        var decrypted = Buffer.concat([decipher.update(data), decipher.final()]);
+        return JSON.parse(decrypted);
+    } catch (exception) {
+        throw new Error(exception.message);
+    }
 }
