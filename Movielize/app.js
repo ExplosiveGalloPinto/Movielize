@@ -36,10 +36,23 @@ app.post('/savechart', function (req, res) {
 	console.log(jsonQuery);
 	jsonQuery = JSON.parse(jsonQuery);
 	var dataFiltered = filterApply(jsonQuery);
-	dataFiltered = sortByKey(dataFiltered, 'year'); //ordenamiento por anho
-	dataFiltered = sortByKey(dataFiltered, 'genre');
+	dataFiltered.sort(function sortByKey(a, b){
+		return cmp(
+			[cmp(a.year, b.year), -cmp(a.genre, b.genre)],
+			[cmp(b.year, a.year), -cmp(b.genre, a.genre)]
+		);
+	});
+//) = sortByKey(dataFiltered, 'genre'); //ordenamiento por anho
+	var moviesQuantity = Object.keys(dataFiltered).length;
+	var yearMin = dataFiltered[0].year;
+	var yearMax = dataFiltered[moviesQuantity-1].year;
+	var yearDiff = yearMax-yearMin; 
+//	dataFiltered = sortByKey(dataFiltered, 'year');
 	console.log("Resultado: " + JSON.stringify(dataFiltered));
 	req.session.jsonQuery = dataFiltered;
+	req.session.yearDifference = yearDiff;
+	req.session.yearMin = yearMin;
+	req.session.yearMax = yearMax;
 	res.send("change page");
 });
 
@@ -48,7 +61,7 @@ app.get('/makeGraph', function(req, res){
 });
 
 app.get('/getGraph', function(req, res){
-	res.send(req.session.jsonQuery);
+	res.send([req.session.jsonQuery, req.session.yearDifference, req.session.yearMin, req.session.yearMax]);
 });
 
 
@@ -189,9 +202,15 @@ function filterApply(query) { //utilizar la estructura
 	return queryResult;
 }
 
-function sortByKey(array, key) {
+/*function sortByKey(array, key) {
     return array.sort(function(a, b) {
         var x = a[key]; var y = b[key];
         return ((x < y) ? -1 : ((x > y) ? 1 : 0));
     });
+}*/
+
+cmp = function(x, y){
+	return x>y ? 1 : x<y ? -1 : 0
 }
+
+

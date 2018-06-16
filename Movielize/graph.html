@@ -4,31 +4,109 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="description" content="This is Movielize. A graphic app for your movies.">
-    <title>Main page</title>
+	<title>Graph</title>
+	<h2>Movielize</h2>
+	<svg width="1000" height="500"></svg>
 	<script src="https://d3js.org/d3.v5.min.js" charset="uft-8"></script>
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js">  </script>
 	<script>
-		var moviesQuantity;
+		var dataJson;
+		var yearDiff;
+		var yearMin;
+		var yearMax;
 		$.get('/getGraph', function(res){
-			moviesQuantity = Object.keys(res).length;
-			alert(moviesQuantity);
-			console.log(moviesQuantity);
-			//alert(res);
-		});
-		 
+			dataJson = res[0];
+			yearDiff = res[1];
+			yearMin = res[2];
+			yearMax = res[3];
+
+
+		var margin = {top: 20, right: 20, bottom: 30, left: 40},
+    	width = 1000 - margin.left - margin.right,
+		height = 500 - margin.top - margin.bottom;
+
+      	var svg = d3.select("svg")
+			.append("svg")
+        	.attr("width", width+margin.left+margin.right)
+        	.attr("height", height+margin.top+margin.bottom);
+
+      	var x = d3.scaleBand().rangeRound([0, width]).padding(0.1),
+        	y = d3.scaleLinear().rangeRound([height, 0]);
+
+      	var g = svg.append("g")
+			.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+		if(yearDiff > 10){
+			var yearsPlot = [];
+			var division = Math.floor(yearDiff/3);
+			for(i=1; i<=3;i++){
+				if(i===3){
+					yearsPlot.push([yearMin+(division*(i-1)),yearMax]);
+				}
+				else{
+					yearsPlot.push([yearMin+(division*(i-1)),yearMin+(division*i)]);
+				}
+			}
+			x.domain(yearsPlot);
+		}
+		else{
+			x.domain(dataJson.map(function(d) { return d.year; }).sort());
+		}
+		y.domain([0,10]);
+		
+		/*d3.json(dataJson, function(d){
+			d.year = +d.year;
+			if(d.year) return d
+		}, function(error, data){
+			if(error) throw error;
+				g.append("g")
+					.attr("class", "axis axis--x")
+					.attr("transform", "translate(0," + height + ")")
+					.call(d3.axisBottom(x));
+					
+				g.append("g")
+					.attr("class", "axis axis--y")
+					.call(d3.axisLeft(y));
+
+				g.append("circle")
+					.attr("id", function(dataJson){return dataJson["title"]})
+					.attr("r", 5)
+					.style("fill", "#680000");
+			}
+		);*/
+		g.append("g")
+					.attr("class", "axis axis--x")
+					.attr("transform", "translate(0," + height + ")")
+					.call(d3.axisBottom(x));
+					
+				g.append("g")
+					.attr("class", "axis axis--y")
+					.call(d3.axisLeft(y));
+
+				g.append("circle")
+					.attr("cx", 100)
+					.attr("cy", 100)
+					.attr("r", 5)
+					.style("fill", "#680000");
+		//console.log
+	});
 	</script>
 
 </head>
 <body>
-	<h2>Movielize</h2>
-    <form id="form1" style="border: 3px solid #f1f1f1; width: 500px">
+    <!--<form id="form1" style="border: 3px solid #f1f1f1; width: 500px"></form>-->
 
-    </form>
-	<br/>
-	<br/>
-	<div id="chart"></div>
 	<script>
-		 
+		
+      
+        /*g.selectAll(".bar")
+          .data(data)
+          .enter().append("rect")
+            .attr("class", "bar")
+            .attr("x", function(d) { return x(d.letter); })
+            .attr("y", function(d) { return y(d.frequency); })
+            .attr("width", x.bandwidth())
+            .attr("height", function(d) { return height - y(d.frequency); });*/
 	</script>
 </body>
 </html>
