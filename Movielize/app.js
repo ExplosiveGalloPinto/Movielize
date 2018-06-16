@@ -36,18 +36,16 @@ app.post('/savechart', function (req, res) {
 	console.log(jsonQuery);
 	jsonQuery = JSON.parse(jsonQuery);
 	var dataFiltered = filterApply(jsonQuery);
-	dataFiltered.sort(function sortByKey(a, b){
+	dataFiltered.sort(function sortByKey(a, b){  //ordenamiento por anho, agrupado por generos
 		return cmp(
 			[cmp(a.year, b.year), -cmp(a.genre, b.genre)],
 			[cmp(b.year, a.year), -cmp(b.genre, a.genre)]
 		);
 	});
-//) = sortByKey(dataFiltered, 'genre'); //ordenamiento por anho
 	var moviesQuantity = Object.keys(dataFiltered).length;
 	var yearMin = dataFiltered[0].year;
 	var yearMax = dataFiltered[moviesQuantity-1].year;
 	var yearDiff = yearMax-yearMin; 
-//	dataFiltered = sortByKey(dataFiltered, 'year');
 	console.log("Resultado: " + JSON.stringify(dataFiltered));
 	req.session.jsonQuery = dataFiltered;
 	req.session.yearDifference = yearDiff;
@@ -202,12 +200,6 @@ function filterApply(query) { //utilizar la estructura
 	return queryResult;
 }
 
-/*function sortByKey(array, key) {
-    return array.sort(function(a, b) {
-        var x = a[key]; var y = b[key];
-        return ((x < y) ? -1 : ((x > y) ? 1 : 0));
-    });
-}*/
 
 cmp = function(x, y){
 	return x>y ? 1 : x<y ? -1 : 0
