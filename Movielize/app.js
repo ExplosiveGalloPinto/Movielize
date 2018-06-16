@@ -7,6 +7,10 @@ var session = require('express-session')
 // para recibir y parsear content en formato json
 var bodyParser = require('body-parser');
 
+//Iniciar node-cache
+const NodeCache = require( "node-cache" );
+const myCache = new NodeCache();
+
 // constante para definir el puerto a ser usado
 var PORT_NUMBER = 8080;
 
@@ -29,7 +33,7 @@ var file = require('./movies.json');
 app.use(cors())
 
 // publicar contenido estatico que esta en ese folder
-app.use(express.static("C:\\Users\\Andres\\Desktop\\Movielize\\Movielize"));
+app.use(express.static("C:\\Users\\Asus\\Desktop\\Movielize\\Movielize"));
 
 app.post('/savechart', function (req, res) {
 	var jsonQuery = req.body.query;
@@ -52,11 +56,20 @@ app.post('/savechart', function (req, res) {
 	req.session.yearDifference = yearDiff;
 	req.session.yearMin = yearMin;
 	req.session.yearMax = yearMax;
+	//Store in cache, first create a key
+	var queryKey = keyGenerator();
+	console.log("Generated key: "+queryKey);
+	myCache.set( queryKey, dataFiltered, function( err, success ){//Save the query
+		if( !err && success ){
+		  console.log("status:"+ success );
+		}
+	  });
+	//Send info to the other page  
 	res.send("change page");
 });
 
 app.get('/makeGraph', function(req, res){
-	res.sendFile("C:\\Users\\Andres\\Desktop\\Movielize\\Movielize\\graph.html");
+	res.sendFile("C:\\Users\\Asus\\Desktop\\Movielize\\Movielize\\graph.html");
 });
 
 app.get('/getGraph', function(req, res){
@@ -206,4 +219,25 @@ cmp = function(x, y){
 	return x>y ? 1 : x<y ? -1 : 0
 }
 
+function keyGenerator() {
+	var letters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+	var color = '';
+	for (var i = 0; i < 10; i++) {
+		color += letters[Math.floor(Math.random() * 16)];
+	}
+	return color;
+}
 
+function retrieveKey(keyValue){
+	myCache.get( keyValue, function( err, value ){
+		if( !err ){
+		  if(value == undefined){
+			console.log("Invalid key.");
+		  }else{
+			console.log( value );
+			return value;
+		  }
+		}
+	  });
+
+}
