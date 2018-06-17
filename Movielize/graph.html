@@ -72,7 +72,7 @@
 					yearsPlot.push([yearMin+(division*(i-1)),yearMax]);
 				}
 				else{
-					yearsPlot.push([yearMin+(division*(i-1)),yearMin+(division*i)]);
+					yearsPlot.push([yearMin+(division*(i-1)),yearMin+(division*i)-1]);
 				}
 			}
 			x.domain(yearsPlot);
@@ -83,35 +83,34 @@
 		y.domain([0,10]);
 
 		var moviesGroupedByRange = [];
+		var moviesQuantity = Object.keys(dataJson).length;
 		if(yearDiff > 10){
 			var moviesTemp = [];
-			var yearTemp = yearMin;
-			var globalCounter;
-			for(i=0; yearTemp <= yearsPlot[0][1]; i++){
+			var globalCounter = 0;
+			for(i=0; dataJson[i].year <= yearsPlot[0][1]; i++){
 				moviesTemp.push(dataJson[i]);
-				yearTemp = dataJson[i].year;
 				globalCounter = i;
 			}
 			globalCounter++;
 			moviesTemp = sortByOneKey(moviesTemp, "genre");
 			moviesGroupedByRange.push(moviesTemp);
 			moviesTemp = [];
-			for(i=globalCounter; yearTemp <= yearsPlot[1][1]; i++){
+			for(i=globalCounter; dataJson[i].year <= yearsPlot[1][1]; i++){
 				moviesTemp.push(dataJson[i]);
-				yearTemp = dataJson[i].year;
 				globalCounter = i;
 			}
 			globalCounter++;
 			moviesTemp = sortByOneKey(moviesTemp, "genre");
 			moviesGroupedByRange.push(moviesTemp);
 			moviesTemp = [];
-			for(i=globalCounter; yearTemp <= yearsPlot[2][1]; i++){
+			for(i=globalCounter; dataJson[i].year <= yearsPlot[2][1]; i++){
 				moviesTemp.push(dataJson[i]);
-				yearTemp = dataJson[i].year;
-				globalCounter = i;
+				if(i == moviesQuantity-1)
+					break;
 			}
 			moviesTemp = sortByOneKey(moviesTemp, "genre");
 			moviesGroupedByRange.push(moviesTemp);
+			
 		}
 
 		g.append("g")
@@ -125,7 +124,88 @@
 
 				var space;
 				if(yearDiff>10){
-					console.log("f");
+					var temp = [];
+					var produce = [];
+					var len = yearsPlot.length;
+					for(var i=0;i<len;i++){
+						if(temp.indexOf(yearsPlot[i]) == -1){
+								temp.push(yearsPlot[i]);
+							var _data = {};
+							_data.year = yearsPlot[i];
+							
+							produce.push(_data);
+						}else{
+							produce.push(dataJson[i].year);
+						}
+					}
+					space = Math.floor(width/produce.length);
+					var maxGenre = 0;
+					var xMaxGenre = 0;
+					var yMaxGenre = 0;
+					var tempYear = yearMin;
+					moviesGroupedByRange.forEach(element => {
+						var nameGenre = element[0].genre;
+						var countGenre = 0;
+						var previousGenre;
+						for(index=0; index< Object.keys(element).length; index++){
+							previousGenre = nameGenre;
+							nameGenre = element[index].genre;
+							tempYear = element[index].year;
+							
+							if(previousGenre == nameGenre){
+								if(!searchColor(nameGenre)){
+									colors.push([nameGenre, getRandomColor()]);
+								}
+								countGenre++;
+							}
+							else{
+								element[index].genreQuantity = countGenre;
+								countGenre=1;
+							}
+							if(countGenre > maxGenre){
+								maxGenre = countGenre;
+								xMaxGenre = 0; //asignar
+								yMaxGenre = 0; //asignar
+							}
+						}
+					});
+					g.selectAll("circle")
+						.data(moviesGroupedByRange)
+						.enter()
+						.append("circle")
+						.attr("cx", function(d){
+							var i = moviesGroupedByRange.indexOf(d);
+							d.forEach(element => {
+								var xPos = Math.floor(Math.random() *(space*(i+1))+(space*i));
+								return xPos + margin.left;
+							})
+						})
+						.attr("cy", function(d) {
+								d.forEach(element => {
+									if(element.hasOwnProperty("genreQuantity")){
+										var yPos = height+margin.top+margin.bottom - (element.genreQuantity*10/maxGenre*50);
+										return yPos;
+									}
+								});
+
+						})
+						.attr("r", function(d){
+							d.forEach(element => {
+								if(element.hasOwnProperty("genreQuantity")){
+									return element.genreQuantity*10;
+								}
+							});
+						})
+						.style("fill", function(d){
+							d.forEach(element => {
+								for(i=0; i<colors.length;i++){
+									if(colors[i][0] === element.genre){
+										console.log(colors[i][1]);
+										return colors[i][1];
+									}
+								}
+							});
+						});
 				}
 				else{
 					var temp = [];
@@ -158,7 +238,6 @@
 					var nameGenre = dataJson[0].genre;
 					var countGenre = 0;
 					var previousGenre;
-					var graphData = [];
 					console.log(Object.keys(dataJson).length);
 					for(index=0; index< Object.keys(dataJson).length; index++){
 						previousGenre = nameGenre;
@@ -180,39 +259,37 @@
 							xMaxGenre = 0; //asignar
 							yMaxGenre = 0; //asignar
 						}
-						console.log(index);
 					}
-				}
-				g.selectAll("circle")
-					.data(dataJson)
-					.enter()
-					.append("circle")
-					.attr("cx", function(d){
-						for(i=0; i<produce.length ;i++){
-							console.log(space);
-							if(d.year == produce[i].year){
-								var xPos = Math.floor(Math.random() *(space*(i+1))+(space*i));
-								console.log("Aiuda: "+ xPos);
-								return xPos + margin.left;
-							}
+					g.selectAll("circle")
+						.data(dataJson)
+						.enter()
+						.append("circle")
+						.attr("cx", function(d){
+							for(i=0; i<produce.length ;i++){
+								if(d.year == produce[i].year){
+									var xPos = Math.floor(Math.random() *(space*(i+1))+(space*i));
+									return xPos + margin.left;
+								}
+							}})
+						.attr("cy", function(d) {
+							if(d.genreQuantity){
+							console.log(d.genreQuantity);
+							return (height+margin.top+margin.bottom - (d.genreQuantity*10/maxGenre*50))
 						}})
-					.attr("cy", function(d) {
-						if(d.genreQuantity){
-						console.log(d.genreQuantity);
-						return (height+margin.top+margin.bottom - (d.genreQuantity*10/maxGenre*50))
-					}})
-					.attr("r", function(d){
-						if(d.genreQuantity){
-							return d.genreQuantity*10;
-						}
-					})
-					.style("fill", function(d){
-						for(i=0; i<colors.length;i++){
-							if(colors[i][0] === d.genre){
-								return colors[i][1];
+						.attr("r", function(d){
+							if(d.genreQuantity){
+								return d.genreQuantity*10;
 							}
-						}
-					});
+						})
+						.style("fill", function(d){
+							for(i=0; i<colors.length;i++){
+								if(colors[i][0] === d.genre){
+									return colors[i][1];
+								}
+							}
+						});
+				}
+				
 	});
 	</script>
 

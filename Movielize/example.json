@@ -1,1 +1,210 @@
-[{"title":"Sorority House Massacre 2","year":1990,"director":"Jim Wynorski","cast":"Gail Harris","genre":"Horror","notes":"sequel"},{"title":"The Russia House","year":1990,"director":"Fred Schepisi","cast":"Sean Connery, Michelle Pfeiffer, Roy Scheider, James Fox, Klaus Maria Brandauer","genre":"Drama","notes":"Based on novel by John LeCarre"},{"title":"House Party","year":1990,"director":"Reginald Hudlin","cast":"Kid 'n Play, Robin Harris","genre":"Comedy","notes":null},{"title":"Madhouse","year":1990,"director":"Tom Ropelewski","cast":"Kirstie Alley, John Larroquette","genre":"Comedy","notes":null},{"title":"House Party 2","year":1991,"director":null,"cast":null,"genre":"Comedy","notes":"sequel"},{"title":"Housesitter","year":1992,"director":"Frank Oz","cast":"Steve Martin, Goldie Hawn, Dana Delany","genre":"Rom-com","notes":"Universal"},{"title":"To Grandmother's House We Go","year":1992,"director":"Jeff Franklin","cast":"Mary-Kate Olsen, Ashley Olsen","genre":"Family","notes":"TV"},{"title":"A House in the Hills","year":1993,"director":"Ken Wiederhorn","cast":"Michael Madsen, Helen Slater, Jeffrey Tambor","genre":"Thriller","notes":null},{"title":"The House of the Spirits","year":1993,"director":"Bille August","cast":"Meryl Streep, Jeremy Irons, Glenn Close, Winona Ryder, Antonio Banderas, Vanessa Redgrave, Armin Mueller-Stahl, María Conchita Alonso, Vincent Gallo","genre":"Drama","notes":"Miramax; based on Isabel Allende novel"},{"title":"House of Cards","year":1993,"director":"Michael Lessac","cast":"Kathleen Turner, Tommy Lee Jones","genre":"Drama","notes":"Miramax"},{"title":"House Party 3","year":1994,"director":"Eric Meza","cast":"Kid 'n Play, Bernie Mac","genre":"Comedy","notes":"2nd sequel to House Party"},{"title":"Welcome to the Dollhouse","year":1995,"director":"Todd Solondz","cast":"Heather Matarazzo","genre":"Drama","notes":null},{"title":"Man of the House","year":1995,"director":"James Orr","cast":"Chevy Chase, Farrah Fawcett, Jonathan Taylor Thomas","genre":"Comedy","notes":"Walt Disney"},{"title":"Houseguest","year":1995,"director":"Randall Miller","cast":"Sinbad, Phil Hartman","genre":"Comedy","notes":null},{"title":"Amityville Dollhouse","year":1996,"director":"Steve White","cast":"Robin Thomas, Starr Andreeff, Allan Cutler","genre":"Horror","notes":null},{"title":"House Arrest","year":1996,"director":"Harry Winer","cast":"Jamie Lee Curtis, Kevin Pollak, Jennifer Tilly, Christopher McDonald, Jennifer Love Hewitt, Ray Walston","genre":"Comedy","notes":null},{"title":"Stranger in the House","year":1997,"director":null,"cast":"Michele Greene, Steve Railsback","genre":"Suspense","notes":"from Georges Simenon story"},{"title":"Firehouse","year":1997,"director":"\"Alan Smithee\"","cast":"Richard Dean Anderson, Edie Falco","genre":"Drama","notes":"Rysher Entertainment"},{"title":"The House of Yes","year":1997,"director":"Mark Waters","cast":"Parker Posey","genre":"Comedy","notes":"based on Wendy MacLeod play"},{"title":"House on Haunted Hill","year":1999,"director":"William Malone","cast":"Geoffrey Rush, Famke Janssen, Taye Diggs, Peter Gallagher, Chris Kattan, Ali Larter, Bridgette Wilson, Max Perlich","genre":"Horror","notes":"remake of 1959 film"},{"title":"The Cider House Rules","year":1999,"director":"Lasse Hallström","cast":"Tobey Maguire, Michael Caine, Charlize Theron, Paul Rudd, Delroy Lindo, Jane Alexander, Kathy Baker","genre":"Drama","notes":"based on John Irving novel; Academy Award for Caine"},{"title":"The House of Mirth","year":2000,"director":"Terence Davies","cast":"Gillian Anderson, Laura Linney, Dan Aykroyd","genre":"Drama","notes":null},{"title":"Big Momma's House","year":2000,"director":"Raja Gosnell","cast":"Martin Lawrence, Paul Giamatti","genre":"Comedy","notes":"20th Century Fox"}]
+[
+    {
+        "title": "The House on Carroll Street",
+        "year": 1988,
+        "director": "Peter Yates",
+        "cast": "Kelly McGillis, Jeff Daniels, Mandy Patinkin",
+        "genre": "Thriller",
+        "notes": null
+    },
+    {
+        "title": "Clownhouse",
+        "year": 1988,
+        "director": "Victor Salva",
+        "cast": "Sam Rockwell",
+        "genre": "Horror",
+        "notes": null
+    },
+    {
+        "title": "Road House",
+        "year": 1989,
+        "director": "Rowdy Herrington",
+        "cast": "Patrick Swayze, Kelly Lynch, Sam Elliott, Ben Gazzara",
+        "genre": "Action",
+        "notes": "5 Razzie nominations"
+    },
+    {
+        "title": "Sorority House Massacre 2",
+        "year": 1990,
+        "director": "Jim Wynorski",
+        "cast": "Gail Harris",
+        "genre": "Horror",
+        "notes": "sequel"
+    },
+    {
+        "title": "The Russia House",
+        "year": 1990,
+        "director": "Fred Schepisi",
+        "cast": "Sean Connery, Michelle Pfeiffer, Roy Scheider, James Fox, Klaus Maria Brandauer",
+        "genre": "Drama",
+        "notes": "Based on novel by John LeCarre"
+    },
+    {
+        "title": "House Party",
+        "year": 1990,
+        "director": "Reginald Hudlin",
+        "cast": "Kid 'n Play, Robin Harris",
+        "genre": "Comedy",
+        "notes": null
+    },
+    {
+        "title": "Madhouse",
+        "year": 1990,
+        "director": "Tom Ropelewski",
+        "cast": "Kirstie Alley, John Larroquette",
+        "genre": "Comedy",
+        "notes": null
+    },
+    {
+        "title": "House Party 2",
+        "year": 1991,
+        "director": null,
+        "cast": null,
+        "genre": "Comedy",
+        "notes": "sequel"
+    },
+    {
+        "title": "Housesitter",
+        "year": 1992,
+        "director": "Frank Oz",
+        "cast": "Steve Martin, Goldie Hawn, Dana Delany",
+        "genre": "Rom-com",
+        "notes": "Universal"
+    },
+    {
+        "title": "To Grandmother's House We Go",
+        "year": 1992,
+        "director": "Jeff Franklin",
+        "cast": "Mary-Kate Olsen, Ashley Olsen",
+        "genre": "Family",
+        "notes": "TV"
+    },
+    {
+        "title": "A House in the Hills",
+        "year": 1993,
+        "director": "Ken Wiederhorn",
+        "cast": "Michael Madsen, Helen Slater, Jeffrey Tambor",
+        "genre": "Thriller",
+        "notes": null
+    },
+    {
+        "title": "House of Cards",
+        "year": 1993,
+        "director": "Michael Lessac",
+        "cast": "Kathleen Turner, Tommy Lee Jones",
+        "genre": "Drama",
+        "notes": "Miramax"
+    },
+    {
+        "title": "The House of the Spirits",
+        "year": 1993,
+        "director": "Bille August",
+        "cast": "Meryl Streep, Jeremy Irons, Glenn Close, Winona Ryder, Antonio Banderas, Vanessa Redgrave, Armin Mueller-Stahl, María Conchita Alonso, Vincent Gallo",
+        "genre": "Drama",
+        "notes": "Miramax; based on Isabel Allende novel"
+    },
+    {
+        "title": "House Party 3",
+        "year": 1994,
+        "director": "Eric Meza",
+        "cast": "Kid 'n Play, Bernie Mac",
+        "genre": "Comedy",
+        "notes": "2nd sequel to House Party"
+    },
+    {
+        "title": "Welcome to the Dollhouse",
+        "year": 1995,
+        "director": "Todd Solondz",
+        "cast": "Heather Matarazzo",
+        "genre": "Drama",
+        "notes": null
+    },
+    {
+        "title": "Houseguest",
+        "year": 1995,
+        "director": "Randall Miller",
+        "cast": "Sinbad, Phil Hartman",
+        "genre": "Comedy",
+        "notes": null
+    },
+    {
+        "title": "Man of the House",
+        "year": 1995,
+        "director": "James Orr",
+        "cast": "Chevy Chase, Farrah Fawcett, Jonathan Taylor Thomas",
+        "genre": "Comedy",
+        "notes": "Walt Disney"
+    },
+    {
+        "title": "Amityville Dollhouse",
+        "year": 1996,
+        "director": "Steve White",
+        "cast": "Robin Thomas, Starr Andreeff, Allan Cutler",
+        "genre": "Horror",
+        "notes": null
+    },
+    {
+        "title": "House Arrest",
+        "year": 1996,
+        "director": "Harry Winer",
+        "cast": "Jamie Lee Curtis, Kevin Pollak, Jennifer Tilly, Christopher McDonald, Jennifer Love Hewitt, Ray Walston",
+        "genre": "Comedy",
+        "notes": null
+    },
+    {
+        "title": "Stranger in the House",
+        "year": 1997,
+        "director": null,
+        "cast": "Michele Greene, Steve Railsback",
+        "genre": "Suspense",
+        "notes": "from Georges Simenon story"
+    },
+    {
+        "title": "Firehouse",
+        "year": 1997,
+        "director": "\"Alan Smithee\"",
+        "cast": "Richard Dean Anderson, Edie Falco",
+        "genre": "Drama",
+        "notes": "Rysher Entertainment"
+    },
+    {
+        "title": "The House of Yes",
+        "year": 1997,
+        "director": "Mark Waters",
+        "cast": "Parker Posey",
+        "genre": "Comedy",
+        "notes": "based on Wendy MacLeod play"
+    },
+    {
+        "title": "House on Haunted Hill",
+        "year": 1999,
+        "director": "William Malone",
+        "cast": "Geoffrey Rush, Famke Janssen, Taye Diggs, Peter Gallagher, Chris Kattan, Ali Larter, Bridgette Wilson, Max Perlich",
+        "genre": "Horror",
+        "notes": "remake of 1959 film"
+    },
+    {
+        "title": "The Cider House Rules",
+        "year": 1999,
+        "director": "Lasse Hallström",
+        "cast": "Tobey Maguire, Michael Caine, Charlize Theron, Paul Rudd, Delroy Lindo, Jane Alexander, Kathy Baker",
+        "genre": "Drama",
+        "notes": "based on John Irving novel; Academy Award for Caine"
+    },
+    {
+        "title": "The House of Mirth",
+        "year": 2000,
+        "director": "Terence Davies",
+        "cast": "Gillian Anderson, Laura Linney, Dan Aykroyd",
+        "genre": "Drama",
+        "notes": null
+    },
+    {
+        "title": "Big Momma's House",
+        "year": 2000,
+        "director": "Raja Gosnell",
+        "cast": "Martin Lawrence, Paul Giamatti",
+        "genre": "Comedy",
+        "notes": "20th Century Fox"
+    }
+]

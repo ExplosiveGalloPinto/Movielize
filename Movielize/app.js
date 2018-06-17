@@ -35,7 +35,7 @@ var file = require('./movies.json');
 app.use(cors())
 
 // publicar contenido estatico que esta en ese folder
-app.use(express.static("C:\\Users\\Asus\\Desktop\\Movielize\\Movielize"));
+app.use(express.static("C:\\Users\\Andres\\Desktop\\Movielize\\Movielize"));
 
 app.post('/savechart', function (req, res) {
 	var jsonQuery = req.body.query;
@@ -65,7 +65,7 @@ app.post('/savechart', function (req, res) {
 });
 
 app.get('/makeGraph', function(req, res){
-	res.sendFile("C:\\Users\\Asus\\Desktop\\Movielize\\Movielize\\graph.html");
+	res.sendFile("C:\\Users\\Andres\\Desktop\\Movielize\\Movielize\\graph.html");
 });
 
 app.get('/getGraph', function(req, res){
