@@ -14,6 +14,16 @@
         </table>
         <br><br>
         <button id="submit" onclick="getFields()">Submit</button>
+        <br><br>
+        
+        <table>
+          <tr>
+            <td>Query:</td>
+            <td><textarea rows="1" cols="50" id="publicKeyField"></textarea></td>
+          </tr>
+        </table>
+        <br><br>
+        <button id="submitKey" onclick="getKeyField()">Submit Key</button>
 
 <!--Script-->
 <script>
@@ -22,12 +32,25 @@ function getFields(){
     var query;
     query=document.getElementById("queryData").value;
     var obj = JSON.parse(query);
-    $.post("/savechart",{query: query},function(response){
+    $.post("/parseQuery",{query: query},function(response){
       window.location.href =  "/makeGraph";
     });
   }
   catch(err){
     alert("Incorrect input format, must be JSON type")
+  }
+}
+
+function getKeyField(){
+  try{
+    var query;
+    query=document.getElementById("publicKeyField").value;
+    $.post("/loadKey",{query: query},function(response){
+      window.location.href =  "/makeGraph";
+    });
+  }
+  catch(err){
+    alert("Incorrect input")
   }
 }
 

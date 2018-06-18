@@ -6,9 +6,13 @@
 <meta name="description" content="This is Movielize. A graphic app for your movies.">
 	<title>Graph</title>
 	<h2>Movielize</h2>
-	<svg width="1000" height="500"></svg>
 	<script src="https://d3js.org/d3.v5.min.js" charset="uft-8"></script>
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js">  </script>
+
+</head>
+<body>
+	<!--<form id="form1" style="border: 3px solid #f1f1f1; width: 500px"></form>-->
+	<svg width="1000" height="500"></svg>
 	<script>
 		var dataJson;
 		var yearDiff;
@@ -83,10 +87,10 @@
 		y.domain([0,10]);
 
 		var moviesGroupedByRange = [];
-		var moviesQuantity = Object.keys(dataJson).length;
+		var movieQuantity = Object.keys(dataJson).length;
 		if(yearDiff > 10){
 			var moviesTemp = [];
-			var globalCounter = 0;
+			var globalCounter;
 			for(i=0; dataJson[i].year <= yearsPlot[0][1]; i++){
 				moviesTemp.push(dataJson[i]);
 				globalCounter = i;
@@ -105,8 +109,9 @@
 			moviesTemp = [];
 			for(i=globalCounter; dataJson[i].year <= yearsPlot[2][1]; i++){
 				moviesTemp.push(dataJson[i]);
-				if(i == moviesQuantity-1)
+				if(i == movieQuantity-1){
 					break;
+				}
 			}
 			moviesTemp = sortByOneKey(moviesTemp, "genre");
 			moviesGroupedByRange.push(moviesTemp);
@@ -177,6 +182,7 @@
 							var i = moviesGroupedByRange.indexOf(d);
 							d.forEach(element => {
 								var xPos = Math.floor(Math.random() *(space*(i+1))+(space*i));
+								console.log("cx: "+xPos);
 								return xPos + margin.left;
 							})
 						})
@@ -184,6 +190,7 @@
 								d.forEach(element => {
 									if(element.hasOwnProperty("genreQuantity")){
 										var yPos = height+margin.top+margin.bottom - (element.genreQuantity*10/maxGenre*50);
+										console.log("cy: "+yPos);
 										return yPos;
 									}
 								});
@@ -192,6 +199,7 @@
 						.attr("r", function(d){
 							d.forEach(element => {
 								if(element.hasOwnProperty("genreQuantity")){
+									console.log("Radio, cantidad de elementos con " + element.genre + ": "+ element.genreQuantity);
 									return element.genreQuantity*10;
 								}
 							});
@@ -200,7 +208,7 @@
 							d.forEach(element => {
 								for(i=0; i<colors.length;i++){
 									if(colors[i][0] === element.genre){
-										console.log(colors[i][1]);
+										console.log("Color de " + colors[i][0] + ": "+colors[i][1]);
 										return colors[i][1];
 									}
 								}
@@ -238,7 +246,7 @@
 					var nameGenre = dataJson[0].genre;
 					var countGenre = 0;
 					var previousGenre;
-					console.log(Object.keys(dataJson).length);
+					var graphData = [];
 					for(index=0; index< Object.keys(dataJson).length; index++){
 						previousGenre = nameGenre;
 						nameGenre = dataJson[index].genre;
@@ -260,27 +268,34 @@
 							yMaxGenre = 0; //asignar
 						}
 					}
-					g.selectAll("circle")
-						.data(dataJson)
-						.enter()
-						.append("circle")
-						.attr("cx", function(d){
-							for(i=0; i<produce.length ;i++){
-								if(d.year == produce[i].year){
-									var xPos = Math.floor(Math.random() *(space*(i+1))+(space*i));
-									return xPos + margin.left;
-								}
-							}})
-						.attr("cy", function(d) {
-							if(d.genreQuantity){
-							console.log(d.genreQuantity);
-							return (height+margin.top+margin.bottom - (d.genreQuantity*10/maxGenre*50))
-						}})
-						.attr("r", function(d){
-							if(d.genreQuantity){
-								return d.genreQuantity*10;
+				}
+				g.selectAll("circle")
+					.data(dataJson)
+					.enter()
+					.append("circle")
+					.attr("cx", function(d){
+						for(i=0; i<produce.length ;i++){
+							if(d.year == produce[i].year){
+								var xPos = Math.floor(Math.random() *(space*(i+1))+(space*i));
+								return xPos + margin.left;
 							}
-						})
+						}})
+					.attr("cy", function(d) {
+						if(d.genreQuantity){
+						return (height+margin.top+margin.bottom - (d.genreQuantity*10/maxGenre*50))
+					}})
+					.attr("r", function(d){
+						if(d.genreQuantity){
+							return d.genreQuantity*10;
+						}
+					})
+					.style("fill", function(d){
+						for(i=0; i<colors.length;i++){
+							if(colors[i][0] === d.genre){
+								return colors[i][1];
+							}
+						}
+					})
 						.style("fill", function(d){
 							for(i=0; i<colors.length;i++){
 								if(colors[i][0] === d.genre){
@@ -288,17 +303,15 @@
 								}
 							}
 						});
-				}
-				
-	});
+				});
 	</script>
-
-</head>
-<body>
-    <!--<form id="form1" style="border: 3px solid #f1f1f1; width: 500px"></form>-->
-
+	<button id="SaveGraph" onclick="saveGraph()">Save Query</button>
 	<script>
-		
+		function saveGraph(){
+			$.post('/saveGraph',function(response){
+				alert("Su llave es: "+response)
+			});
+		}
       
         /*g.selectAll(".bar")
           .data(data)

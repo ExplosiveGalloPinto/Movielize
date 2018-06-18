@@ -8,6 +8,8 @@ var session = require('express-session')
 var bodyParser = require('body-parser');
 //Init crypto
 var crypto = require('crypto');
+var decryptedDataG = undefined;
+var publicKey;
 
 //Iniciar node-cache
 const NodeCache = require( "node-cache" );
@@ -35,9 +37,8 @@ var file = require('./movies.json');
 app.use(cors())
 
 // publicar contenido estatico que esta en ese folder
-app.use(express.static("C:\\Users\\Andres\\Desktop\\Movielize\\Movielize"));
-
-app.post('/savechart', function (req, res) {
+app.use(express.static("C:\\Users\\Asus\\Desktop\\Movielize\\Movielize"));
+app.post('/parseQuery', function (req, res) {
 	var jsonQuery = req.body.query;
 	console.log(jsonQuery);
 	jsonQuery = JSON.parse(jsonQuery);
@@ -52,14 +53,12 @@ app.post('/savechart', function (req, res) {
 	var yearMin = dataFiltered[0].year;
 	var yearMax = dataFiltered[moviesQuantity-1].year;
 	var yearDiff = yearMax-yearMin; 
-	console.log("Resultado: " + JSON.stringify(dataFiltered));
+	//console.log("Resultado: " + JSON.stringify(dataFiltered));
 	//res.set('Content-Type','text/plain');
 	req.session.jsonQuery = dataFiltered;
 	req.session.yearDifference = yearDiff;
 	req.session.yearMin = yearMin;
 	req.session.yearMax = yearMax;
-	//Store in cache, first create a key
-
 	//Send info to the other page  
 	res.send("change page");
 });
@@ -69,7 +68,37 @@ app.get('/makeGraph', function(req, res){
 });
 
 app.get('/getGraph', function(req, res){
+	if(decryptedDataG != undefined){
+		var moviesQuantity = Object.keys(decryptedDataG).length;
+		var yearMin = decryptedDataG[0].year;
+		var yearMax = decryptedDataG[moviesQuantity-1].year;
+		var yearDiff = yearMax-yearMin; 
+		console.log("OKALDIJ");
+		//res.set('Content-Type','text/plain');
+		req.session.jsonQuery = decryptedDataG;
+		req.session.yearDifference = yearDiff;
+		req.session.yearMin = yearMin;
+		req.session.yearMax = yearMax;
+		//Send info to the other page  
+		res.send([decryptedDataG, req.session.yearDifference, req.session.yearMin, req.session.yearMax]);
+		decryptedDataG = undefined;
+	}
+	else{
 	res.send([req.session.jsonQuery, req.session.yearDifference, req.session.yearMin, req.session.yearMax]);
+	}
+});
+
+//usin the key for the graph
+app.post('/loadKey', function(req, res){
+	var keyQuery = req.body.query;
+	retrieveCache(keyQuery);
+	res.send("done");
+
+});
+
+app.post('/saveGraph', function(req, res){
+	encryptCache(req.session.jsonQuery);
+	res.send(publicKey);
 });
 
 
@@ -224,17 +253,16 @@ function keyGenerator() {
 	return color;
 }
 
-function retrieveKey(keyValue){
+function retrieveCache(keyValue){
 	myCache.get( keyValue, function( err, value ){
 		if( !err ){
 		  if(value == undefined){
 			console.log("Invalid key.");
 		  }else{
-			var mykey = crypto.createDecipher('aes-128-cbc', 'mypassword');
-			var decypherData = mykey.update(value, 'hex', 'utf8')
-			decypherData += mykey.update.final('utf8');  
-			console.log( value );
-			return value;
+			var decryptedData = decrypt(value,keyValue);
+			//console.log(decryptedData);
+			decryptedDataG = decryptedData;
+			return decryptedData;
 		  }
 		}
 	  });
@@ -242,13 +270,31 @@ function retrieveKey(keyValue){
 
 function encryptCache(data){
 	var queryKey = keyGenerator();
-	console.log("Generated key: "+queryKey);
-	var mykey = crypto.createCipher('aes-128-cbc', queryKey);
-	var cypherData = mykey.update(data, 'utf8', 'hex')
-	cypherData += mykey.update.final('hex');
-	myCache.set( queryKey, cypherData, function( err, success ){//Save the query
+	publicKey = queryKey;
+	//console.log("Generated key: "+queryKey);
+	myCache.set( queryKey, encrypt(data,queryKey), function( err, success ){//Save the query
 		if( !err && success ){
 		  console.log("status:"+ success );
 		}
 	  });
+}
+
+function encrypt(data,key) {
+    try {
+        var cipher = crypto.createCipher('aes-256-cbc', key);
+        var encrypted = Buffer.concat([cipher.update(new Buffer(JSON.stringify(data), "utf8")), cipher.final()]);
+        return encrypted;
+    } catch (exception) {
+        throw new Error(exception.message);
+    }
+}
+
+function decrypt(data, key) {
+    try {
+        var decipher = crypto.createDecipher("aes-256-cbc", key);
+        var decrypted = Buffer.concat([decipher.update(data), decipher.final()]);
+        return JSON.parse(decrypted);
+    } catch (exception) {
+        throw new Error(exception.message);
+    }
 }
